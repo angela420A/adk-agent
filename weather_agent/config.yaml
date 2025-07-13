@@ -1,0 +1,6 @@
+GEMINI:
+  MODEL: gemini-2.0-flash
+OPRNAI:
+  MODEL: openai/gpt-4.1
+Anthropic:
+  MODEL: anthropic/claude-sonnet-4-20250514
