@@ -10,6 +10,8 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 from . import config, prompt
+from .sub_agents.farewell_agent import farewell_agent
+from .sub_agents.greeting_agent import greeting_agent
 
 # Ignore all warnings
 warnings.filterwarnings("ignore")
@@ -49,10 +51,19 @@ def get_weather(city: str) -> dict:
         return {"status": "error", "error_message": f"Sorry, I don't have weather information for '{city}'."}
 
 
+# root_agent = Agent(
+#     name="weather_agent_v1",
+#     model=CONFIG.get("GEMINI", "MODEL"),
+#     description="Provides weather information for specific cities.",
+#     instruction=prompt.WEATHER_AGENT_PROMPT,
+#     tools=[get_weather],
+# )
+
 root_agent = Agent(
     name="weather_agent_v1",
     model=CONFIG.get("GEMINI", "MODEL"),
     description="Provides weather information for specific cities.",
     instruction=prompt.WEATHER_AGENT_PROMPT,
     tools=[get_weather],
+    sub_agents=[greeting_agent, farewell_agent],
 )
