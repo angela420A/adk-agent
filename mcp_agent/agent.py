@@ -3,17 +3,18 @@ import os
 from google.adk.agents import LlmAgent
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
 
-google_maps_api_key = os.environ.get("GOOGLE_MAPS_API_KEY")
+from . import config, prompt
 
+CONFIG = config.Config("config.yaml")
+
+google_maps_api_key = os.environ.get("GOOGLE_MAPS_API_KEY", "")
 if not google_maps_api_key:
-    google_maps_api_key = "YOUR_GOOGLE_MAPS_API_KEY_HERE"
-    if google_maps_api_key == "YOUR_GOOGLE_MAPS_API_KEY_HERE":
-        print("WARNING: GOOGLE_MAPS_API_KEY is not set. Please set it as an environment variable or in the script.")
+    print("WARNING: GOOGLE_MAPS_API_KEY is not set. Please set it as an environment variable or in the script.")
 
 root_agent = LlmAgent(
-    model='gemini-2.0-flash',
+    model=CONFIG.get("GEMINI", "MODEL"),
     name='maps_assistant_agent',
-    instruction='Help the user with mapping, directions, and finding places using Google Maps tools.',
+    instruction=prompt.MCP_AGENT_PROMPT,
     tools=[
         MCPToolset(
             connection_params=StdioServerParameters(

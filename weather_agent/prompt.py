@@ -1,4 +1,4 @@
-"""Prompt for the root agent"""
+"""Prompt for the root agent of Weather Agent"""
 
 WEATHER_AGENT_PROMPT = """
 You are a helpful weather assistant.
